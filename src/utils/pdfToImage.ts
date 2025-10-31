@@ -1,10 +1,11 @@
-import * as pdfjsLib from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions, version } from 'pdfjs-dist';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Configure the worker source for PDF.js
+GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.min.js`;
 
 export async function convertPdfToImage(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+  const pdf = await getDocument({ data: arrayBuffer }).promise;
   const page = await pdf.getPage(1);
   
   const viewport = page.getViewport({ scale: 2.0 });
